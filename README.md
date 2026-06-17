@@ -1,4 +1,5 @@
 # Animated Background Generator
+[https://anibgmaker.somewatson.com](https://anibgmaker.somewatson.com)
 
 A professional-grade tool for creating customizable animated backgrounds for videos and shorts.
 
@@ -24,8 +25,6 @@ A professional-grade tool for creating customizable animated backgrounds for vid
 
 ## 🤝 Credits
 This project was created by [Some Watson](https://somewatson.com) with the assistance of **opencode**, an AI software engineering agent.
-
-Hosted at: [https://anibgmaker.somewatson.com](https://anibgmaker.somewatson.com)
 
 ## 📄 License
 MIT License
