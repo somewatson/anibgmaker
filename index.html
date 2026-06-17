@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Background Generator</title>
+    <link rel="stylesheet" href="css/style.css?v=1.1">
+</head>
+<body>
+    <div id="app">
+        <div id="controls">
+            <h1>BG Generator</h1>
+            <div id="fpsCounter">FPS: 60</div>
+            
+            <div class="control-group">
+                <label>Theme</label>
+                <select id="themeSelect">
+                    <option value="particles">Particles</option>
+                    <option  value="shapes">Geometric Shapes</option>
+                    <option value="stars">Starry Night</option>
+                    <option value="fireworks">Fireworks</option>
+                    <option value="birds">Flying Birds</option>
+                    <option value="matrix">Digital Rain</option>
+                    <option value="bubbles">Floating Bubbles</option>
+                    <option value="nebula">Nebula Clouds</option>
+                    <option value="confetti">Confetti</option>
+                    <option value="snow">Digital Snow</option>
+                    <option value="warp">Warp Speed</option>
+                    <option value="tunnel">Tunnel Vision</option>
+                    <option value="tronCity">Tron City</option>
+                    <option value="tronCircuit">Tron Circuit</option>
+                    <option value="tronArena">Disc Arena</option>
+                    <option value="triangles">Triangle Storm</option>
+                    <option value="tempest">Tempest 2000</option>
+                    <option value="beach">Tropical Beach</option>
+                    <option value="lightsaber">Light Saber</option>
+                </select>
+                <div style="display: flex; gap: 5px; margin-top: 5px;">
+                    <button id="prevThemeBtn" style="flex: 1;">⬅ Prev Theme</button>
+                    <button id="nextThemeBtn" style="flex: 1;">Next Theme ➔</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Count</label>
+                <input type="range" id="countSlider" min="10" max="200" value="50">
+                <span id="countValue">50</span>
+            </div>
+            
+            <div class="control-group">
+                <label>Speed</label>
+                <input type="range" id="speedSlider" min="1" max="10" value="2">
+                <span id="speedValue">2</span>
+            </div>
+
+            <div class="control-group">
+                <label>Color</label>
+                <input type="color" id="colorPicker" value="#00ffcc">
+            </div>
+            <div class="control-group">
+                <label>Accent Color</label>
+                <input type="color" id="accentColorPicker" value="#ff00ff">
+            </div>
+
+            <div class="control-group">
+                <label>BG Color</label>
+                <input type="color" id="bgColorPicker" value="#0a0a0a">
+            </div>
+
+            <button id="randomizeBtn">Randomize Style</button>
+            <button id="randomizeColorsBtn">Randomize Colors</button>
+            <button id="randomizeAllBtn">Randomize All</button>
+            <button id="micBtn">Enable Microphone</button>
+            <button id="hideMenuBtn">Hide Menu</button>
+        </div>
+        <div id="audioControls">
+                <div style="display: flex; gap: 5px; align-items: center; width: 100%;">
+                    <select id="musicTheme" style="flex: 1;">
+                        <option value="ambient">Ambient (Stars)</option>
+                        <option value="techno">Techno (Shapes)</option>
+                        <option value="calm">Calm (Particles)</option>
+                        <option value="energetic">Energetic (Fireworks)</option>
+                        <option value="synthwave">Synthwave (Grid)</option>
+                        <option value="lofi">Lo-Fi (Rain/Clouds)</option>
+                        <option value="euphoric">Euphoric (Bubbles)</option>
+                        <option value="glitch">Glitch (Matrix)</option>
+                        <option value="rain">Rain Noise</option>
+                        <option value="waves">Ocean Waves</option>
+                        <option value="tron">Tron (Tron Themes)</option>
+                    </select>
+                    <button id="prevMusicBtn" style="width: 40px; flex-shrink: 0;">⬅</button>
+                    <button id="nextMusicBtn" style="width: 40px; flex-shrink: 0;">➔</button>
+                </div>
+
+            <button id="toggleMusic">Play Music</button>
+        </div>
+
+        <div id="showMenuBtn">Show Menu</div>
+        <canvas id="bgCanvas"></canvas>
+    </div>
+    <script src="js/main_2d.js?v=1.2Someth"></script>
+</body>
+</html>
