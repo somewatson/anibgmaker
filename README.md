@@ -23,7 +23,9 @@ A professional-grade tool for creating customizable animated backgrounds for vid
 6. Click **Hide Menu** to record your background.
 
 ## 🤝 Credits
-This project was built with the assistance of **opencode**, an AI software engineering agent.
+This project was created by [Some Watson](https://somewatson.com) with the assistance of **opencode**, an AI software engineering agent.
+
+Hosted at: [https://anibgmaker.somewatson.com](https://anibgmaker.somewatson.com)
 
 ## 📄 License
 MIT License
