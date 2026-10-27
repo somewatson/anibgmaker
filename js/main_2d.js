@@ -61,7 +61,12 @@ syncDOMToState();
 if (hasUrlParams) {
     document.getElementById('controls').style.display = 'none';
     document.getElementById('audioControls').style.display = 'none';
-    document.getElementById('showMenuBtn').style.display = 'block';
+    
+    if (appState.hideMenu) {
+        document.getElementById('showMenuBtn').style.display = 'none';
+    } else {
+        document.getElementById('showMenuBtn').style.display = 'block';
+    }
 
     // Auto-request microphone access only if enabled in the query string
     if (appState.micEnabled) {

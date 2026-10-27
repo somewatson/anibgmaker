@@ -8,6 +8,7 @@ class AppState {
         this.theme = 'default';
         this.musicTheme = 'ambient';
         this.micEnabled = false;
+        this.hideMenu = false;
     }
 
     loadFromQueryString() {
@@ -44,6 +45,10 @@ class AppState {
         }
         if (params.has('mic')) {
             this.micEnabled = params.get('mic') === 'true';
+            hasParams = true;
+        }
+        if (params.has('hideMenu')) {
+            this.hideMenu = params.get('hideMenu') === 'true';
             hasParams = true;
         }
 
@@ -169,6 +174,7 @@ class UIHandler {
         params.set('theme', this.state.theme);
         params.set('musicTheme', this.state.musicTheme);
         params.set('mic', this.state.micEnabled);
+        params.set('hideMenu', this.state.hideMenu);
         
         const newURL = `${window.location.pathname}?${params.toString()}`;
         window.history.replaceState({}, '', newURL);
