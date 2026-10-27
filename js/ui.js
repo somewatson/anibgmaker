@@ -7,9 +7,51 @@ class AppState {
         this.bgColor = '#000000';
         this.theme = 'default';
         this.musicTheme = 'ambient';
+        this.micEnabled = false;
+    }
+
+    loadFromQueryString() {
+        const params = new URLSearchParams(window.location.search);
+        let hasParams = false;
+
+        if (params.has('count')) {
+            this.count = parseInt(params.get('count'));
+            hasParams = true;
+        }
+        if (params.has('speed')) {
+            this.speed = parseFloat(params.get('speed'));
+            hasParams = true;
+        }
+        if (params.has('color')) {
+            this.color = params.get('color');
+            hasParams = true;
+        }
+        if (params.has('accentColor')) {
+            this.accentColor = params.get('accentColor');
+            hasParams = true;
+        }
+        if (params.has('bgColor')) {
+            this.bgColor = params.get('bgColor');
+            hasParams = true;
+        }
+        if (params.has('theme')) {
+            this.theme = params.get('theme');
+            hasParams = true;
+        }
+        if (params.has('musicTheme')) {
+            this.musicTheme = params.get('musicTheme');
+            hasParams = true;
+        }
+        if (params.has('mic')) {
+            this.micEnabled = params.get('mic') === 'true';
+            hasParams = true;
+        }
+
+        return hasParams;
     }
 
     updateFromDOM() {
+
         const countSlider = document.getElementById('countSlider');
         const speedSlider = document.getElementById('speedSlider');
         const colorPicker = document.getElementById('colorPicker');
@@ -41,36 +83,36 @@ class UIHandler {
             if (el) el.addEventListener(event, fn);
         };
 
-        bind('countSlider', 'input', () => {
+        const updateAndSync = (type) => {
             this.state.updateFromDOM();
+            this.syncStateToURL();
+            this.onStateChange(type);
+        };
+
+        bind('countSlider', 'input', () => {
+            updateAndSync('count');
             document.getElementById('countValue').textContent = this.state.count;
-            this.onStateChange('count');
         });
 
         bind('speedSlider', 'input', () => {
-            this.state.updateFromDOM();
+            updateAndSync('speed');
             document.getElementById('speedValue').textContent = this.state.speed;
-            this.onStateChange('speed');
         });
 
         bind('colorPicker', 'input', () => {
-            this.state.updateFromDOM();
-            this.onStateChange('color');
+            updateAndSync('color');
         });
 
         bind('accentColorPicker', 'input', () => {
-            this.state.updateFromDOM();
-            this.onStateChange('accentColor');
+            updateAndSync('accentColor');
         });
 
         bind('bgColorPicker', 'input', () => {
-            this.state.updateFromDOM();
-            this.onStateChange('bgColor');
+            updateAndSync('bgColor');
         });
 
         bind('themeSelect', 'change', () => {
-            this.state.updateFromDOM();
-            this.onStateChange('theme');
+            updateAndSync('theme');
         });
 
         bind('prevThemeBtn', 'click', () => {
@@ -99,10 +141,57 @@ class UIHandler {
             document.getElementById('showMenuBtn').style.display = 'none';
         });
 
-        bind('randomizeBtn', 'click', () => this.randomize());
-        bind('randomizeColorsBtn', 'click', () => this.randomizeColors());
-        bind('randomizeAllBtn', 'click', () => this.randomizeAll());
+        bind('randomizeBtn', 'click', () => {
+            this.randomize();
+            this.syncStateToURL();
+        });
+        bind('randomizeColorsBtn', 'click', () => {
+            this.randomizeColors();
+            this.syncStateToURL();
+        });
+        bind('randomizeAllBtn', 'click', () => {
+            this.randomizeAll();
+            this.syncStateToURL();
+        });
+
+        bind('copyUrlBtn', 'click', () => {
+            this.copyConfigURL();
+        });
     }
+
+    syncStateToURL() {
+        const params = new URLSearchParams();
+        params.set('count', this.state.count);
+        params.set('speed', this.state.speed);
+        params.set('color', this.state.color);
+        params.set('accentColor', this.state.accentColor);
+        params.set('bgColor', this.state.bgColor);
+        params.set('theme', this.state.theme);
+        params.set('musicTheme', this.state.musicTheme);
+        params.set('mic', this.state.micEnabled);
+        
+        const newURL = `${window.location.pathname}?${params.toString()}`;
+        window.history.replaceState({}, '', newURL);
+        return newURL;
+    }
+
+
+    copyConfigURL() {
+        const relativeURL = this.syncStateToURL();
+        const fullURL = window.location.origin + relativeURL;
+        
+        navigator.clipboard.writeText(fullURL).then(() => {
+            const btn = document.getElementById('copyUrlBtn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(() => {
+                btn.textContent = originalText;
+            }, 2000);
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    }
+
 
     randomize() {
         const colorPicker = document.getElementById('colorPicker');

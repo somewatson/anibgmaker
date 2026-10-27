@@ -38,6 +38,44 @@ const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
 const audioManager = new AudioManager();
 const appState = new AppState();
+
+// Load from URL if parameters exist
+const hasUrlParams = appState.loadFromQueryString();
+
+// Sync DOM to the (possibly updated) state
+const syncDOMToState = () => {
+    if (document.getElementById('countSlider')) document.getElementById('countSlider').value = appState.count;
+    if (document.getElementById('countValue')) document.getElementById('countValue').textContent = appState.count;
+    if (document.getElementById('speedSlider')) document.getElementById('speedSlider').value = appState.speed;
+    if (document.getElementById('speedValue')) document.getElementById('speedValue').textContent = appState.speed;
+    if (document.getElementById('colorPicker')) document.getElementById('colorPicker').value = appState.color;
+    if (document.getElementById('accentColorPicker')) document.getElementById('accentColorPicker').value = appState.accentColor;
+    if (document.getElementById('bgColorPicker')) document.getElementById('bgColorPicker').value = appState.bgColor;
+    if (document.getElementById('themeSelect')) document.getElementById('themeSelect').value = appState.theme;
+    if (document.getElementById('musicTheme')) document.getElementById('musicTheme').value = appState.musicTheme;
+};
+
+syncDOMToState();
+
+// Hide menu by default if we loaded from URL
+if (hasUrlParams) {
+    document.getElementById('controls').style.display = 'none';
+    document.getElementById('audioControls').style.display = 'none';
+    document.getElementById('showMenuBtn').style.display = 'block';
+
+    // Auto-request microphone access only if enabled in the query string
+    if (appState.micEnabled) {
+        (async () => {
+            const btn = document.getElementById('micBtn');
+            const success = await audioManager.initMic();
+            if (success) {
+                btn.textContent = 'Disable Microphone';
+                btn.classList.add('mic-active');
+            }
+        })();
+    }
+}
+
 const ui = new UIHandler(appState, (type) => {
     if (type === 'count' || type === 'theme' || type === 'all') init();
     if (type === 'color' || type === 'accentColor' || type === 'colors') {
