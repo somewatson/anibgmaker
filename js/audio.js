@@ -32,6 +32,11 @@ class AudioManager {
         this.initAudio();
         try {
             this.micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            
+            if (this.audioCtx.state === 'suspended') {
+                await this.audioCtx.resume();
+            }
+
             const source = this.audioCtx.createMediaStreamSource(this.micStream);
             this.analyser = this.audioCtx.createAnalyser();
             this.analyser.fftSize = 256;
