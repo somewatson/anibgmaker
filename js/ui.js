@@ -6,8 +6,6 @@ class AppState {
         this.accentColor = '#ff0000';
         this.bgColor = '#000000';
         this.theme = 'default';
-        this.musicTheme = 'ambient';
-        this.micEnabled = false;
         this.hideMenu = false;
     }
 
@@ -39,14 +37,6 @@ class AppState {
             this.theme = params.get('theme');
             hasParams = true;
         }
-        if (params.has('musicTheme')) {
-            this.musicTheme = params.get('musicTheme');
-            hasParams = true;
-        }
-        if (params.has('mic')) {
-            this.micEnabled = params.get('mic') === 'true';
-            hasParams = true;
-        }
         if (params.has('hideMenu')) {
             this.hideMenu = params.get('hideMenu') === 'true';
             hasParams = true;
@@ -63,7 +53,6 @@ class AppState {
         const accentColorPicker = document.getElementById('accentColorPicker');
         const bgColorPicker = document.getElementById('bgColorPicker');
         const themeSelect = document.getElementById('themeSelect');
-        const musicThemeSelect = document.getElementById('musicTheme');
 
         if (countSlider) this.count = parseInt(countSlider.value);
         if (speedSlider) this.speed = parseFloat(speedSlider.value);
@@ -71,7 +60,6 @@ class AppState {
         if (accentColorPicker) this.accentColor = accentColorPicker.value;
         if (bgColorPicker) this.bgColor = bgColorPicker.value;
         if (themeSelect) this.theme = themeSelect.value;
-        if (musicThemeSelect) this.musicTheme = musicThemeSelect.value;
     }
 }
 
@@ -142,8 +130,13 @@ class UIHandler {
 
         bind('showMenuBtn', 'click', () => {
             document.getElementById('controls').style.display = 'block';
-            document.getElementById('audioControls').style.display = 'block';
+            document.getElementById('audioControls').style.display = 'none';
             document.getElementById('showMenuBtn').style.display = 'none';
+        });
+
+        bind('obsHelpBtn', 'click', () => {
+            const menu = document.getElementById('obsHelpMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
         });
 
         bind('randomizeBtn', 'click', () => {
@@ -172,8 +165,6 @@ class UIHandler {
         params.set('accentColor', this.state.accentColor);
         params.set('bgColor', this.state.bgColor);
         params.set('theme', this.state.theme);
-        params.set('musicTheme', this.state.musicTheme);
-        params.set('mic', this.state.micEnabled);
         params.set('hideMenu', this.state.hideMenu);
         
         const newURL = `${window.location.pathname}?${params.toString()}`;

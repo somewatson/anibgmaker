@@ -36,7 +36,6 @@ class Particle {
 
 const canvas = document.getElementById('bgCanvas');
 const ctx = canvas.getContext('2d');
-const audioManager = new AudioManager();
 const appState = new AppState();
 
 // Load from URL if parameters exist
@@ -52,7 +51,6 @@ const syncDOMToState = () => {
     if (document.getElementById('accentColorPicker')) document.getElementById('accentColorPicker').value = appState.accentColor;
     if (document.getElementById('bgColorPicker')) document.getElementById('bgColorPicker').value = appState.bgColor;
     if (document.getElementById('themeSelect')) document.getElementById('themeSelect').value = appState.theme;
-    if (document.getElementById('musicTheme')) document.getElementById('musicTheme').value = appState.musicTheme;
 };
 
 syncDOMToState();
@@ -66,18 +64,6 @@ if (hasUrlParams) {
         document.getElementById('showMenuBtn').style.display = 'none';
     } else {
         document.getElementById('showMenuBtn').style.display = 'block';
-    }
-
-    // Auto-request microphone access only if enabled in the query string
-    if (appState.micEnabled) {
-        (async () => {
-            const btn = document.getElementById('micBtn');
-            const success = await audioManager.initMic();
-            if (success) {
-                btn.textContent = 'Disable Microphone';
-                btn.classList.add('mic-active');
-            }
-        })();
     }
 }
 
@@ -108,7 +94,7 @@ function init() {
 }
 
 function animate() {
-    const audioBoost = 1 + audioManager.updateMicIntensity() * 10;
+    const audioBoost = 1;
     
     const now = performance.now();
     if (!window.lastTime) window.lastTime = now;
@@ -133,52 +119,7 @@ function animate() {
 }
 
 // Audio UI bindings (kept in main as they are tightly coupled to audioManager)
-document.getElementById('musicTheme').onchange = () => {
-    if (audioManager.isMusicPlaying()) {
-        audioManager.stopMusic();
-        audioManager.startMusic(document.getElementById('musicTheme').value);
-    }
-};
-
-document.getElementById('prevMusicBtn').onclick = () => {
-    const select = document.getElementById('musicTheme');
-    select.selectedIndex = (select.selectedIndex - 1 + select.options.length) % select.options.length;
-    select.dispatchEvent(new Event('change'));
-};
-
-document.getElementById('nextMusicBtn').onclick = () => {
-    const select = document.getElementById('musicTheme');
-    select.selectedIndex = (select.selectedIndex + 1) % select.options.length;
-    select.dispatchEvent(new Event('change'));
-};
-
-document.getElementById('toggleMusic').onclick = () => {
-    const btn = document.getElementById('toggleMusic');
-    if (audioManager.isMusicPlaying()) {
-        audioManager.stopMusic();
-        btn.textContent = 'Play Music';
-    } else {
-        audioManager.startMusic(document.getElementById('musicTheme').value);
-        btn.textContent = 'Stop Music';
-    }
-};
-
-document.getElementById('micBtn').onclick = async () => {
-    const btn = document.getElementById('micBtn');
-    if (audioManager.micStream) {
-        audioManager.stopMic();
-        btn.textContent = 'Enable Microphone';
-        btn.classList.remove('mic-active');
-    } else {
-        const success = await audioManager.initMic();
-        if (success) {
-            btn.textContent = 'Disable Microphone';
-            btn.classList.add('mic-active');
-        } else {
-            alert('Microphone access denied.');
-        }
-    }
-};
+// REMOVED AUDIO FEATURES
 
 init();
 animate();
